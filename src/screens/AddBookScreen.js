@@ -15,7 +15,7 @@ export default function AddBookScreen({ isbn, setIsbn, onAdd, loading }) {
       <Text style={styles.title}>新しい本の入荷</Text>
       <Text style={styles.desc}>
         本の裏にあるISBNコードを入力してください。{"\n"}
-        データベースに登録されます（この時点では貸出されません）。
+        データベースに登録されます。
       </Text>
 
       <TextInput

@@ -49,16 +49,16 @@ export default function App() {
 			return;
 		}
 
-		setIsLoading(true); // くるくる開始
+		setIsLoading(true); 
 		const res = await api.addBookByIsbn(newIsbn);
-		setIsLoading(false); // くるくる終了
+		setIsLoading(false); 
 
 		if (res.status === 201) {
 			const data = await res.json();
 			alertWebCompat("成功", `「${data.title}」を入荷しました`);
 			setNewIsbn("");
 			loadBooks();
-			setActiveTab("library"); // 本棚に戻る
+			setActiveTab("library"); 
 		} else if (res.status === 409) {
 			alertWebCompat("お知らせ", "その本は既に登録されています");
 		} else {
@@ -95,7 +95,7 @@ export default function App() {
 
 				{/* ヘッダーエリア */}
 				<View style={styles.header}>
-					<Text style={styles.headerTitle}>CircleLib 📚</Text>
+					<Text style={styles.headerTitle}>自分の本db</Text>
 				</View>
 
 				{/* メインコンテンツエリア (タブで切り替え) */}

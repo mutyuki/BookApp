@@ -45,7 +45,6 @@ export default function BookCard({ book, onPress, onDelete }) {
 				</View>
 			)}
 
-			{/* 右側の情報エリア */}
 			<View style={styles.infoContainer}>
 				<View style={styles.headerRow}>
 					{/* 出版社を表示 */}
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		marginBottom: 16,
 		padding: 12,
-		// 影の設定 (iOS/Android)
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.1,

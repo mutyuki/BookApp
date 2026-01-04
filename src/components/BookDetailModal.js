@@ -27,7 +27,6 @@ export default function BookDetailModal({ visible, book, onClose }) {
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
-          {/* 表紙画像 */}
           <View style={styles.imageContainer}>
             {book.image_url ? (
               <Image
@@ -55,7 +54,6 @@ export default function BookDetailModal({ visible, book, onClose }) {
             <Text style={styles.metaText}>ISBN: {book.isbn}</Text>
           </View>
 
-          {/* あらすじ */}
           <View style={styles.descContainer}>
             <Text style={styles.descTitle}>あらすじ</Text>
             <Text style={styles.descText}>

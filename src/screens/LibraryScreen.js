@@ -2,7 +2,6 @@ import { View, TextInput, FlatList, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import BookCard from "../components/BookCard";
 
-// ★ここで onPressBook を受け取る必要があります！
 export default function LibraryScreen({
 	books,
 	searchQuery,
@@ -10,7 +9,6 @@ export default function LibraryScreen({
 	onPressBook,
 	onDelete,
 }) {
-	// 検索フィルター
 	const filteredBooks = books.filter(
 		(book) =>
 			book.title.includes(searchQuery) ||
@@ -35,7 +33,6 @@ export default function LibraryScreen({
 				renderItem={({ item }) => (
 					<BookCard
 						book={item}
-						// ★ここで BookCard に onPress を渡す！
 						onPress={onPressBook}
 						onDelete={onDelete}
 					/>

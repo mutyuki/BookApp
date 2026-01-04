@@ -1,6 +1,5 @@
 // src/api.js
 
-// ★重要: ここをあなたのngrok/CloudflareのURLに変えてください
 const API_URL =
   process.env.EXPO_PUBLIC_API_URL || "https://あなたのURL.ngrok-free.app";
 
@@ -27,7 +26,7 @@ export const addBookByIsbn = async (isbn) => {
     headers,
     body: JSON.stringify({ isbn }),
   });
-  return res; // ステータスコード判定のためにresごと返す
+  return res;
 };
 
 // 3. 貸出処理
