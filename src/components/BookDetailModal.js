@@ -34,26 +34,45 @@ export default function BookDetailModal({ visible, book, onClose }) {
               />
             ) : (
               <View style={[styles.coverImage, styles.noImage]}>
-                <Text>No Image</Text>
+                <Text style={styles.noImageText}>No Image</Text>
               </View>
             )}
           </View>
 
           <Text style={styles.title}>{book.title}</Text>
-          <Text style={styles.author}>{book.author}</Text>
+          <Text style={styles.author}>著者: {book.author}</Text>
 
-          <View style={styles.metaContainer}>
-            <Text style={styles.metaText}>
-              出版社: {book.publisher || "不明"}
-            </Text>
-            <Text style={styles.metaText}>
-              出版日: {book.pubdate || "不明"}
-            </Text>
-            <Text style={styles.metaText}>ISBN: {book.isbn}</Text>
+          <View style={styles.infoCard}>
+            <Text style={styles.sectionLabel}>書籍情報</Text>
+            
+            <View style={styles.infoRow}>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>出版社</Text>
+                <Text style={styles.infoValue}>{book.publisher || "不明"}</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoDivider} />
+
+            <View style={styles.infoRow}>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>出版日</Text>
+                <Text style={styles.infoValue}>{book.pubdate || "不明"}</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoDivider} />
+
+            <View style={styles.infoRow}>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>ISBN</Text>
+                <Text style={styles.infoValue}>{book.isbn}</Text>
+              </View>
+            </View>
           </View>
 
-          <View style={styles.descContainer}>
-            <Text style={styles.descTitle}>あらすじ</Text>
+          <View style={styles.descCard}>
+            <Text style={styles.sectionLabel}>あらすじ</Text>
             <Text style={styles.descText}>
               {book.description || "あらすじ情報はありません。"}
             </Text>
@@ -65,60 +84,115 @@ export default function BookDetailModal({ visible, book, onClose }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  header: { padding: 16, alignItems: "flex-end" },
+  container: { flex: 1, backgroundColor: "#f8f9fa" },
+  header: { 
+    padding: 16, 
+    alignItems: "flex-end",
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
   closeBtn: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#6366f1",
     borderRadius: 20,
   },
-  closeText: { fontSize: 14, fontWeight: "bold", color: "#333" },
+  closeText: { fontSize: 14, fontWeight: "bold", color: "#fff" },
 
   content: { padding: 20, alignItems: "center", paddingBottom: 50 },
   imageContainer: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-    marginBottom: 20,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
+    marginBottom: 24,
+    borderRadius: 12,
   },
   coverImage: {
-    width: 140,
-    height: 200,
-    borderRadius: 8,
-    backgroundColor: "#eee",
+    width: 160,
+    height: 230,
+    borderRadius: 12,
+    backgroundColor: "#e0e0e0",
   },
   noImage: { justifyContent: "center", alignItems: "center" },
+  noImageText: { color: "#999", fontSize: 14 },
+  
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 8,
+    color: "#1a1a2e",
+    paddingHorizontal: 10,
   },
-  author: { fontSize: 16, color: "#666", marginBottom: 16 },
-  metaContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 10,
+  author: { 
+    fontSize: 16, 
+    color: "#6366f1", 
     marginBottom: 24,
+    fontWeight: "500",
   },
-  metaText: {
-    fontSize: 12,
-    color: "#888",
-    backgroundColor: "#f5f5f5",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
+
+  infoCard: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  descContainer: { width: "100%", alignItems: "flex-start" },
-  descTitle: {
+  sectionLabel: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 8,
-    color: "#333",
+    color: "#1a1a2e",
+    marginBottom: 16,
   },
-  descText: { fontSize: 15, lineHeight: 24, color: "#444" },
+  infoRow: {
+    paddingVertical: 12,
+  },
+  infoItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  infoLabel: {
+    fontSize: 14,
+    color: "#888",
+    fontWeight: "500",
+  },
+  infoValue: {
+    fontSize: 14,
+    color: "#333",
+    fontWeight: "600",
+    textAlign: "right",
+    flex: 1,
+    marginLeft: 16,
+  },
+  infoDivider: {
+    height: 1,
+    backgroundColor: "#f0f0f0",
+  },
+
+  descCard: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  descText: { 
+    fontSize: 15, 
+    lineHeight: 26, 
+    color: "#555",
+    textAlign: "justify",
+  },
 });
