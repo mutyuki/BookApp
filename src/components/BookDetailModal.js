@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function BookDetailModal({ visible, book, onClose }) {
@@ -22,7 +21,7 @@ export default function BookDetailModal({ visible, book, onClose }) {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-            <Ionicons name="close" size={24} color="#333" />
+            <Text style={styles.closeText}>閉じる</Text>
           </TouchableOpacity>
         </View>
 
@@ -40,7 +39,6 @@ export default function BookDetailModal({ visible, book, onClose }) {
             )}
           </View>
 
-          {/* 書籍情報 */}
           <Text style={styles.title}>{book.title}</Text>
           <Text style={styles.author}>{book.author}</Text>
 
@@ -69,7 +67,14 @@ export default function BookDetailModal({ visible, book, onClose }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   header: { padding: 16, alignItems: "flex-end" },
-  closeBtn: { padding: 8, backgroundColor: "#f0f0f0", borderRadius: 20 },
+  closeBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 20,
+  },
+  closeText: { fontSize: 14, fontWeight: "bold", color: "#333" },
+
   content: { padding: 20, alignItems: "center", paddingBottom: 50 },
   imageContainer: {
     shadowColor: "#000",

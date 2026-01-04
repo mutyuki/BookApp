@@ -7,12 +7,9 @@ import {
 	Alert,
 	Platform,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function BookCard({ book, onPress, onDelete }) {
-	// 削除ボタンが押されたときの処理
 	const handlePressDelete = () => {
-		// Webブラウザかスマホかで確認ダイアログを出し分ける
 		if (Platform.OS === "web") {
 			if (window.confirm(`「${book.title}」を削除しますか？`)) {
 				onDelete(book.id);
@@ -30,13 +27,11 @@ export default function BookCard({ book, onPress, onDelete }) {
 	};
 
 	return (
-		// カード全体をタップ可能にする (詳細表示のため)
 		<TouchableOpacity
 			style={styles.card}
 			onPress={() => onPress(book)}
 			activeOpacity={0.7}
 		>
-			{/* 表紙画像 (なければ No Image) */}
 			{book.image_url ? (
 				<Image source={{ uri: book.image_url }} style={styles.coverImage} />
 			) : (
@@ -47,12 +42,13 @@ export default function BookCard({ book, onPress, onDelete }) {
 
 			<View style={styles.infoContainer}>
 				<View style={styles.headerRow}>
-					{/* 出版社を表示 */}
 					<Text style={styles.publisher}>{book.publisher}</Text>
-
-					{/* ゴミ箱アイコン (親のonPressが反応しないようにする) */}
-					<TouchableOpacity onPress={handlePressDelete} hitSlop={10}>
-						<Ionicons name="trash-outline" size={20} color="#999" />
+					<TouchableOpacity
+						onPress={handlePressDelete}
+						hitSlop={10}
+						style={styles.deleteBtn}
+					>
+						<Text style={styles.deleteText}>削除</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -89,33 +85,22 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		backgroundColor: "#ccc",
 	},
-	noImageText: {
-		fontSize: 10,
-		color: "#666",
-	},
-	infoContainer: {
-		flex: 1,
-		marginLeft: 12,
-		justifyContent: "center",
-	},
+	noImageText: { fontSize: 10, color: "#666" },
+	infoContainer: { flex: 1, marginLeft: 12, justifyContent: "center" },
 	headerRow: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
 		marginBottom: 4,
 	},
-	publisher: {
-		fontSize: 10,
-		color: "#999",
+	publisher: { fontSize: 12, color: "#999" },
+	title: { fontSize: 18, fontWeight: "bold", color: "#333", marginBottom: 4 },
+	author: { fontSize: 14, color: "#666" },
+	deleteBtn: {
+		backgroundColor: "#ffebee",
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+		borderRadius: 4,
 	},
-	title: {
-		fontSize: 16,
-		fontWeight: "bold",
-		color: "#333",
-		marginBottom: 4,
-	},
-	author: {
-		fontSize: 12,
-		color: "#666",
-	},
+	deleteText: { color: "red", fontSize: 12, fontWeight: "bold" },
 });

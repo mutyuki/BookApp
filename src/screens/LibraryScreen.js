@@ -1,5 +1,4 @@
 import { View, TextInput, FlatList, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import BookCard from "../components/BookCard";
 
 export default function LibraryScreen({
@@ -18,10 +17,10 @@ export default function LibraryScreen({
 	return (
 		<View style={styles.container}>
 			<View style={styles.searchBox}>
-				<Ionicons name="search" size={20} color="#888" />
+				<Text style={styles.searchBadge}>検索</Text>
 				<TextInput
 					style={styles.input}
-					placeholder="蔵書を検索..."
+					placeholder="タイトルや著者で検索..."
 					value={searchQuery}
 					onChangeText={setSearchQuery}
 				/>
@@ -31,11 +30,7 @@ export default function LibraryScreen({
 				data={filteredBooks}
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => (
-					<BookCard
-						book={item}
-						onPress={onPressBook}
-						onDelete={onDelete}
-					/>
+					<BookCard book={item} onPress={onPressBook} onDelete={onDelete} />
 				)}
 				contentContainerStyle={{ paddingBottom: 80 }}
 				ListEmptyComponent={<Text style={styles.empty}>本がありません</Text>}
@@ -49,11 +44,22 @@ const styles = StyleSheet.create({
 	searchBox: {
 		flexDirection: "row",
 		backgroundColor: "#fff",
-		padding: 10,
+		padding: 12,
 		borderRadius: 8,
 		alignItems: "center",
 		marginBottom: 16,
 	},
-	input: { marginLeft: 8, flex: 1, fontSize: 16 },
-	empty: { textAlign: "center", marginTop: 40, color: "#999" },
+	searchBadge: {
+		marginRight: 8,
+		fontSize: 14,
+		fontWeight: "bold",
+		color: "#007AFF",
+		backgroundColor: "#f5f5f5",
+		paddingHorizontal: 8,
+		paddingVertical: 4,
+		borderRadius: 8,
+		overflow: "hidden",
+	},
+	input: { flex: 1, fontSize: 18 },
+	empty: { textAlign: "center", marginTop: 40, color: "#999", fontSize: 16 },
 });

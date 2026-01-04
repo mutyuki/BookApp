@@ -1,35 +1,36 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Platform } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts } from 'expo-font'; 
+import { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-// APIとコンポーネントの読み込み
-import * as api from './src/api';
-import LibraryScreen from './src/screens/LibraryScreen';
-import AddBookScreen from './src/screens/AddBookScreen';
-import BookDetailModal from './src/components/BookDetailModal';
+import * as api from "./src/api";
+import LibraryScreen from "./src/screens/LibraryScreen";
+import AddBookScreen from "./src/screens/AddBookScreen";
+import BookDetailModal from "./src/components/BookDetailModal";
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    ...Ionicons.font,
-  });
-
-  // --- 状態管理 (State) ---
-  const [activeTab, setActiveTab] = useState('library');
+  // --- State ---
+  const [activeTab, setActiveTab] = useState("library");
   const [books, setBooks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [newIsbn, setNewIsbn] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [newIsbn, setNewIsbn] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
 
-  // --- 起動時の処理 ---
+  // --- Effects ---
   useEffect(() => {
     loadBooks();
   }, []);
 
+  // --- Actions ---
   const loadBooks = async () => {
     const data = await api.getBooks();
     setBooks(data);
@@ -47,9 +48,9 @@ export default function App() {
     if (res.status === 201) {
       const data = await res.json();
       alertWebCompat("成功", `「${data.title}」を入荷しました`);
-      setNewIsbn('');
+      setNewIsbn("");
       loadBooks();
-      setActiveTab('library');
+      setActiveTab("library");
     } else if (res.status === 409) {
       alertWebCompat("お知らせ", "その本は既に登録されています");
     } else {
@@ -68,30 +69,26 @@ export default function App() {
   };
 
   const alertWebCompat = (title, msg) => {
-    if (Platform.OS === 'web') {
+    if (Platform.OS === "web") {
       window.alert(`${title}\n${msg}`);
     } else {
       Alert.alert(title, msg);
     }
   };
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  // --- 画面描画 (Render) ---
+  // --- Render ---
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
-        
+
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>CircleLib 📚</Text>
+          <Text style={styles.headerTitle}>MyLib</Text>
         </View>
 
         <View style={styles.content}>
-          {activeTab === 'library' ? (
-            <LibraryScreen 
+          {activeTab === "library" ? (
+            <LibraryScreen
               books={books}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
@@ -99,7 +96,7 @@ export default function App() {
               onDelete={executeDelete}
             />
           ) : (
-            <AddBookScreen 
+            <AddBookScreen
               isbn={newIsbn}
               setIsbn={setNewIsbn}
               onAdd={handleAddBook}
@@ -109,85 +106,92 @@ export default function App() {
         </View>
 
         <View style={styles.tabBar}>
-          <TouchableOpacity 
-            style={styles.tabItem} 
-            onPress={() => setActiveTab('library')}
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => setActiveTab("library")}
           >
-            <Ionicons 
-              name="library" 
-              size={24} 
-              color={activeTab === 'library' ? '#007AFF' : '#999'} 
-            />
-            <Text style={[styles.tabText, activeTab === 'library' && styles.activeTabText]}>
+            <Text
+              style={[
+                styles.tabMark,
+                activeTab === "library" && styles.activeTabMark,
+              ]}
+            >
+              LIB
+            </Text>
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "library" && styles.activeTabText,
+              ]}
+            >
               本棚
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.tabItem} 
-            onPress={() => setActiveTab('add')}
+          <TouchableOpacity
+            style={styles.tabItem}
+            onPress={() => setActiveTab("add")}
           >
-            <Ionicons 
-              name="add-circle" 
-              size={24} 
-              color={activeTab === 'add' ? '#007AFF' : '#999'} 
-            />
-            <Text style={[styles.tabText, activeTab === 'add' && styles.activeTabText]}>
+            <Text
+              style={[styles.tabMark, activeTab === "add" && styles.activeTabMark]}
+            >
+              ADD
+            </Text>
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "add" && styles.activeTabText,
+              ]}
+            >
               入荷
             </Text>
           </TouchableOpacity>
         </View>
 
-        <BookDetailModal 
+        <BookDetailModal
           visible={detailModalVisible}
           book={selectedBook}
           onClose={() => setDetailModalVisible(false)}
         />
-
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
   header: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
   },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
+  headerTitle: { fontSize: 22, fontWeight: "bold", color: "#007AFF" },
+  content: { flex: 1, padding: 16 },
   tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: "#eee",
     paddingBottom: 20,
     paddingTop: 10,
   },
-  tabItem: {
-    flex: 1,
-    alignItems: 'center',
+  tabItem: { flex: 1, alignItems: "center" },
+  tabMark: {
+    fontSize: 12,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    color: "#999",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
   },
-  tabText: {
-    fontSize: 10,
-    marginTop: 4,
-    color: '#999',
+  activeTabMark: {
+    color: "#007AFF",
+    borderColor: "#007AFF",
   },
-  activeTabText: {
-    color: '#007AFF',
-    fontWeight: 'bold',
-  },
+  tabText: { fontSize: 12, marginTop: 4, color: "#999" },
+  activeTabText: { color: "#007AFF", fontWeight: "bold" },
 });
