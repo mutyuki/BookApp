@@ -1,4 +1,12 @@
-import { View, TextInput, FlatList, Text, StyleSheet } from "react-native";
+import { useState } from "react";
+import {
+	View,
+	TextInput,
+	FlatList,
+	Text,
+	StyleSheet,
+	Platform,
+} from "react-native";
 import BookCard from "../components/BookCard";
 
 export default function LibraryScreen({
@@ -8,6 +16,8 @@ export default function LibraryScreen({
 	onPressBook,
 	onDelete,
 }) {
+	const [isSearchFocused, setIsSearchFocused] = useState(false);
+
 	const filteredBooks = books.filter(
 		(book) =>
 			book.title.includes(searchQuery) ||
@@ -16,13 +26,15 @@ export default function LibraryScreen({
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.searchBox}>
-				<Text style={styles.searchBadge}>検索</Text>
+			<View style={[styles.searchBox, isSearchFocused && styles.searchBoxFocused]}>
 				<TextInput
-					style={styles.input}
+					style={[styles.input, Platform.OS === "web" && styles.inputWeb]}
 					placeholder="タイトルや著者で検索..."
+					underlineColorAndroid="transparent"
 					value={searchQuery}
 					onChangeText={setSearchQuery}
+					onFocus={() => setIsSearchFocused(true)}
+					onBlur={() => setIsSearchFocused(false)}
 				/>
 			</View>
 
@@ -42,24 +54,19 @@ export default function LibraryScreen({
 const styles = StyleSheet.create({
 	container: { flex: 1 },
 	searchBox: {
-		flexDirection: "row",
 		backgroundColor: "#fff",
 		padding: 12,
 		borderRadius: 8,
-		alignItems: "center",
 		marginBottom: 16,
+		borderWidth: 1,
+		borderColor: "#ddd",
 	},
-	searchBadge: {
-		marginRight: 8,
-		fontSize: 14,
-		fontWeight: "bold",
-		color: "#007AFF",
-		backgroundColor: "#f5f5f5",
-		paddingHorizontal: 8,
-		paddingVertical: 4,
-		borderRadius: 8,
-		overflow: "hidden",
+	searchBoxFocused: {
+		borderColor: "#007AFF",
 	},
-	input: { flex: 1, fontSize: 18 },
+	input: {
+		fontSize: 18,
+	},
+	inputWeb: { outlineStyle: "none" },
 	empty: { textAlign: "center", marginTop: 40, color: "#999", fontSize: 16 },
 });

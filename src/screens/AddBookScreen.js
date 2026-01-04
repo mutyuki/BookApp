@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -5,9 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 
 export default function AddBookScreen({ isbn, setIsbn, onAdd, loading }) {
+	const [isInputFocused, setIsInputFocused] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.spacer} />
@@ -20,11 +24,18 @@ export default function AddBookScreen({ isbn, setIsbn, onAdd, loading }) {
         </Text>
 
         <TextInput
-          style={styles.input}
+          style={[
+				styles.input,
+				isInputFocused && styles.inputFocused,
+				Platform.OS === "web" && styles.inputWeb,
+			]}
           placeholder="例: 9784..."
           keyboardType="numeric"
+			underlineColorAndroid="transparent"
           value={isbn}
           onChangeText={setIsbn}
+			onFocus={() => setIsInputFocused(true)}
+			onBlur={() => setIsInputFocused(false)}
         />
 
         <TouchableOpacity
@@ -80,6 +91,10 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     marginBottom: 16,
   },
+  inputFocused: {
+    borderColor: "#007AFF",
+  },
+	inputWeb: { outlineStyle: "none" },
   button: {
     width: "100%",
     backgroundColor: "#007AFF",
